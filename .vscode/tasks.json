@@ -1,0 +1,74 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Setup: venv",
+            "type": "shell",
+            "command": "python",
+            "args": ["-m", "venv", ".venv"],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            }
+        },
+        {
+            "label": "Install: deps",
+            "type": "shell",
+            "command": ".venv\\Scripts\\pip",
+            "args": ["install", "-r", "requirements.txt"],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "dependsOn": ["Setup: venv"]
+        },
+        {
+            "label": "Run: HelloGUI",
+            "type": "shell",
+            "command": ".venv\\Scripts\\python",
+            "args": ["-m", "src.hello_gui.app"],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "dependsOn": ["Install: deps"]
+        },
+        {
+            "label": "Test: pytest",
+            "type": "shell",
+            "command": ".venv\\Scripts\\pytest",
+            "args": ["-v"],
+            "problemMatcher": {
+                "owner": "python",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.+?):(\\d+): (.+)$",
+                    "file": 1,
+                    "location": 2,
+                    "message": 3
+                }
+            },
+            "presentation": {
+                "reveal": "always"
+            },
+            "dependsOn": ["Install: deps"]
+        },
+        {
+            "label": "Build: EXE",
+            "type": "shell",
+            "command": ".venv\\Scripts\\pyinstaller",
+            "args": [
+                "--noconfirm",
+                "--name", "HelloGUI",
+                "--windowed",
+                "--onefile",
+                "src/hello_gui/app.py"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always"
+            },
+            "dependsOn": ["Install: deps"]
+        }
+    ]
+}
