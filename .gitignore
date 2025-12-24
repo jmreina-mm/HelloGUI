@@ -1,0 +1,29 @@
+####################################################################################################
+## @file        .gitignore
+ #  @brief      HelloGUI Python Port
+ #  @ref        x
+ #
+ #  @author     Justin Reina, Firmware Engineer
+ #  @created    12/23/22
+ #  @last rev   12/23/22
+ #
+ #  @section    Opens
+ #          none current
+ #
+ #  @section    Legal Disclaimer
+ #          © 2025 Mercury Marine, All rights reserved. All contents of this source file and/or
+ #          any other related source files are the explicity property of Mercury Marine. Do not 
+ #          distribute. Do not copy. 
+ #/
+####################################################################################################
+
+####################################################################################################
+##                                        IGNORED CONTENT                                         ##
+####################################################################################################
+.Archived/
+.venv/
+
+####################################################################################################
+##                                          TEST RESULTS                                          ##
+####################################################################################################
+
