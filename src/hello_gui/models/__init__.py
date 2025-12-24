@@ -1,3 +1,10 @@
+# ============================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: models/__init__.py (Models Subpackage Initialization)
+#
+#  Purpose : Export data models and configuration classes
+# ============================================================================
+
 """
 Initialize models subpackage.
 

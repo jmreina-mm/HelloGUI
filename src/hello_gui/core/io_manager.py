@@ -1,3 +1,9 @@
+# ==================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: core/io_manager.py (CSV File I/O)
+#  Purpose: Read/write CSV datasets with comprehensive validation
+# ==================================================================================================
+
 """
 CSV-based file I/O manager for dataset persistence.
 
@@ -13,20 +19,31 @@ from typing import Optional
 logger = logging.getLogger("hellogui")
 
 
+# --- Write (x, y) points to CSV file with automatic directory creation ---
 def write_csv(file_path: str, points: list[tuple[float, float]]) -> tuple[bool, str]:
     """
-    Write dataset points to a CSV file.
+    ################################################################################################
+    @fcn        write_csv
+    @brief      Write dataset points to CSV file with header.
+    @details    Creates parent directories as needed. Uses simple CSV format with "x,y" header
+                and one point per line. Returns success/failure tuple with descriptive message.
 
-    Creates parent directories if they don't exist. Uses simple CSV format
-    with "x,y" header and one point per line.
+    @param[in]  file_path   Destination file path (string).
+    @param[in]  points      List of (x, y) tuples to write.
+    @return     (tuple[bool, str]) (success, message). True + description on success;
+                                    False + error details on failure.
 
-    Args:
-        file_path (str): Path to write CSV file.
-        points (list[tuple[float, float]]): List of (x, y) data points.
+    @pre        file_path is writable; points contain valid floats.
+    @post       File created/overwritten; parent directories created as needed.
 
-    Returns:
-        tuple[bool, str]: (success, message). If success is True, message describes
-            the write operation; if False, message is the error description.
+    @section    Operation
+         1. Convert path to Path object
+         2. Create parent directories
+         3. Write CSV with header row and data rows
+         4. Log operation and return status
+
+    @note       Automatic directory creation avoids common file-not-found errors.
+    ################################################################################################
     """
     try:
         path = Path(file_path)
@@ -56,21 +73,32 @@ def write_csv(file_path: str, points: list[tuple[float, float]]) -> tuple[bool, 
         return False, error_msg
 
 
+# --- Read (x, y) points from CSV file with validation ---
 def read_csv(file_path: str) -> tuple[list[tuple[float, float]], str]:
     """
-    Read dataset points from a CSV file.
+    ################################################################################################
+    @fcn        read_csv
+    @brief      Read dataset points from a CSV file.
+    @details    Expects CSV with "x,y" header and numeric values per line. Validates that
+                values are valid floats and non-NaN. Returns points with descriptive message.
 
-    Expects a CSV file with "x,y" header and numeric values per line.
-    Validates that values are valid floats and non-NaN.
+    @param[in]  file_path   Source CSV file path (string).
+    @return     (tuple[list[tuple[float, float]], str]) (points, message).
+                On success: points list + description.
+                On failure: empty list + error details.
 
-    Args:
-        file_path (str): Path to CSV file to read.
+    @pre        file_path exists and is readable CSV.
+    @post       None (read-only operation).
 
-    Returns:
-        tuple[list[tuple[float, float]], str]: (points, message).
-            If successful, points is the list of (x, y) tuples and message
-            describes the read operation. If unsuccessful, points is empty
-            list and message is the error description.
+    @section    Operation
+         1. Check file existence
+         2. Parse CSV header and rows
+         3. Validate numeric conversions
+         4. Filter NaN values
+         5. Return tuples with status message
+
+    @note       Robust to missing files and malformed data.
+    ################################################################################################
     """
     try:
         path = Path(file_path)

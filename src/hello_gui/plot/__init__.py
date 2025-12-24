@@ -1,3 +1,10 @@
+# ============================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: plot/__init__.py (Plot Subpackage Initialization)
+#
+#  Purpose : Export plotting and visualization components
+# ============================================================================
+
 """
 Initialize plot subpackage.
 

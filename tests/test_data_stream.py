@@ -1,3 +1,9 @@
+# ==================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: tests/test_data_stream.py (Data Stream Tests)
+#  Purpose: Unit tests for waveform generation and data stream logic
+# ==================================================================================================
+
 """
 Tests for data stream generation logic.
 
@@ -12,8 +18,11 @@ from hello_gui.models import ConfigModel
 from hello_gui.core.data_stream import DataStream
 
 
+# --- Test suite for sine wave generation ---
+
 class TestSineWave:
     """Tests for sine wave generation."""
+
 
     def test_sine_at_zero(self) -> None:
         """Test sine wave at x=0."""
@@ -23,6 +32,7 @@ class TestSineWave:
         y = stream._sine_wave(0.0)
 
         assert abs(y - 0.0) < 1e-10
+
 
     def test_sine_at_quarter_period(self) -> None:
         """Test sine wave at quarter period."""
@@ -34,6 +44,7 @@ class TestSineWave:
         y = stream._sine_wave(x)
 
         assert abs(y - 2.0) < 1e-10
+
 
     def test_sine_amplitude_scaling(self) -> None:
         """Test that amplitude scales the sine output."""
@@ -51,8 +62,11 @@ class TestSineWave:
         assert abs(y2 - y1 * 3.0) < 1e-10
 
 
+# --- Test suite for square wave generation ---
+
 class TestSquareWave:
     """Tests for square wave generation."""
+
 
     def test_square_period(self) -> None:
         """Test square wave period."""
@@ -67,6 +81,7 @@ class TestSquareWave:
         y2 = stream._square_wave(0.75)
         assert y2 == -1.0
 
+
     def test_square_amplitude(self) -> None:
         """Test square wave amplitude."""
         config = ConfigModel(amplitude=5.0, frequency=1.0)
@@ -79,8 +94,11 @@ class TestSquareWave:
         assert y_neg == -5.0
 
 
+# --- Test suite for random walk generation ---
+
 class TestRandomWalk:
     """Tests for random walk generation."""
+
 
     def test_random_walk_sequence(self) -> None:
         """Test that random walk produces a sequence."""
@@ -95,6 +113,7 @@ class TestRandomWalk:
 
         # Values should be changing (very unlikely all same)
         assert len(set(values)) > 1
+
 
     def test_random_walk_amplitude_constraint(self) -> None:
         """Test that random walk steps stay within amplitude bounds."""
@@ -115,6 +134,7 @@ class TestRandomWalk:
 class TestNoiseGeneration:
     """Tests for noise addition."""
 
+
     def test_noise_zero(self) -> None:
         """Test that zero noise produces deterministic output."""
         config = ConfigModel(amplitude=1.0, frequency=0.5, noise=0.0)
@@ -129,6 +149,7 @@ class TestNoiseGeneration:
         y2 = stream2._generate_y()
 
         assert y1 == y2
+
 
     def test_noise_distribution(self) -> None:
         """Test that noise is added (rough sanity check)."""
@@ -147,6 +168,7 @@ class TestNoiseGeneration:
 class TestConfigValidation:
     """Tests for configuration validation."""
 
+
     def test_valid_config(self) -> None:
         """Test that valid config passes validation."""
         config = ConfigModel(amplitude=1.0, frequency=0.5, noise=0.05)
@@ -155,6 +177,7 @@ class TestConfigValidation:
 
         assert is_valid is True
         assert error_msg == ""
+
 
     def test_invalid_amplitude(self) -> None:
         """Test that negative amplitude fails validation."""
@@ -165,6 +188,7 @@ class TestConfigValidation:
         assert is_valid is False
         assert "positive" in error_msg.lower()
 
+
     def test_invalid_frequency(self) -> None:
         """Test that negative frequency fails validation."""
         config = ConfigModel(frequency=-0.5)
@@ -172,6 +196,7 @@ class TestConfigValidation:
         is_valid, error_msg = config.validate()
 
         assert is_valid is False
+
 
     def test_invalid_waveform(self) -> None:
         """Test that invalid waveform type fails validation."""

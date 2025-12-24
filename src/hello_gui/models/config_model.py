@@ -1,3 +1,9 @@
+# ==================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: models/config_model.py (Configuration Data Model)
+#  Purpose: Dataclass for stream configuration with validation
+# ==================================================================================================
+
 """
 Configuration model for the data stream simulator.
 
@@ -9,6 +15,10 @@ frequency, noise level, and sampling parameters.
 from dataclasses import dataclass, field
 from typing import ClassVar, Literal
 
+
+# ==================================================================================================
+#  Class ConfigModel(object):
+# ==================================================================================================
 
 @dataclass
 class ConfigModel:
@@ -26,21 +36,31 @@ class ConfigModel:
 
     amplitude: float = 1.0
     frequency: float = 0.5
-    noise: float = 0.05
-    x_step: float = 0.05
-    waveform: str = "sine"
-    max_points: int = 5000
+    noise: float     = 0.05
+    x_step: float    = 0.05
+    waveform: str    = "sine"
+    max_points: int  = 5000
 
     # Class constants for valid waveform types
     VALID_WAVEFORMS: ClassVar[tuple[str, ...]] = ("sine", "square", "randomwalk")
 
+
+    # --- Validation method for configuration parameters ---
     def validate(self) -> tuple[bool, str]:
         """
-        Validate the configuration parameters.
+        ############################################################################################
+        @fcn        validate
+        @brief      Validate all configuration parameters.
+        @details    Checks amplitude, frequency, noise, x_step, waveform type, and max_points
+                    for valid ranges and values.
 
-        Returns:
-            tuple[bool, str]: (is_valid, error_message). If is_valid is True,
-                error_message is empty.
+        @return     (tuple[bool, str]) (is_valid, error_message). Empty string if valid.
+
+        @pre        Configuration fields have been set.
+        @post       None (read-only validation).
+
+        @note       Used before applying new configuration to stream.
+        ############################################################################################
         """
         if self.amplitude <= 0:
             return False, "Amplitude must be positive."
@@ -56,12 +76,23 @@ class ConfigModel:
             return False, "Max points must be at least 10."
         return True, ""
 
+
+    # --- Return a ConfigModel with factory defaults ---
     @classmethod
     def defaults(cls) -> "ConfigModel":
         """
-        Return a ConfigModel instance with default values.
+        ############################################################################################
+        @fcn        defaults
+        @brief      Factory method returning default configuration.
+        @details    Creates a new ConfigModel with all default parameter values.
 
-        Returns:
-            ConfigModel: A new instance with factory defaults.
+        @return     (ConfigModel) new instance with factory defaults.
+
+        @pre        None.
+        @post       Returns new object (no side effects).
+
+        @note       Use for resetting or initializing fresh configurations.
+        ############################################################################################
         """
         return cls()
+

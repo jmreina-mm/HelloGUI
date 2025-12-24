@@ -1,3 +1,10 @@
+# ============================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: __init__.py (Package Initialization)
+#
+#  Purpose : HelloGUI package initialization and API exposure
+# ============================================================================
+
 """
 HelloGUI - Python GUI Demo Project
 

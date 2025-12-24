@@ -1,3 +1,9 @@
+# =================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: tests/test_io_manager.py (File I/O Tests)
+#  Purpose: Unit tests for CSV read/write operations and validation
+# =================================================================================================
+
 """
 Tests for CSV file I/O manager.
 
@@ -12,8 +18,11 @@ from pathlib import Path
 from hello_gui.core import read_csv, write_csv
 
 
+# --- Test suite for CSV write operations ---
+
 class TestWriteCsv:
     """Tests for write_csv function."""
+
 
     def test_write_basic(self) -> None:
         """Test writing a basic CSV file."""
@@ -26,6 +35,7 @@ class TestWriteCsv:
             assert success is True
             assert file_path.exists()
 
+
     def test_write_creates_parent_dirs(self) -> None:
         """Test that write_csv creates parent directories."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -36,6 +46,7 @@ class TestWriteCsv:
 
             assert success is True
             assert file_path.exists()
+
 
     def test_write_empty_list(self) -> None:
         """Test writing an empty point list."""
@@ -51,6 +62,7 @@ class TestWriteCsv:
                 lines = f.readlines()
                 assert len(lines) == 1  # Just header
 
+
     def test_write_large_dataset(self) -> None:
         """Test writing a large number of points."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -62,8 +74,11 @@ class TestWriteCsv:
             assert success is True
 
 
+# --- Test suite for CSV read operations ---
+
 class TestReadCsv:
     """Tests for read_csv function."""
+
 
     def test_read_basic(self) -> None:
         """Test reading a basic CSV file."""
@@ -77,12 +92,14 @@ class TestReadCsv:
 
             assert points == original_points
 
+
     def test_read_nonexistent_file(self) -> None:
         """Test reading a file that doesn't exist."""
         points, message = read_csv("/nonexistent/path/file.csv")
 
         assert points == []
         assert "not found" in message.lower()
+
 
     def test_read_invalid_header(self) -> None:
         """Test reading a CSV with invalid header."""
@@ -98,6 +115,7 @@ class TestReadCsv:
 
             assert points == []
             assert "header" in message.lower()
+
 
     def test_read_invalid_numeric(self) -> None:
         """Test reading a CSV with non-numeric values."""
@@ -115,6 +133,7 @@ class TestReadCsv:
             assert points == []
             assert "invalid" in message.lower()
 
+
     def test_read_empty_file(self) -> None:
         """Test reading an empty CSV file."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -125,6 +144,7 @@ class TestReadCsv:
 
             assert points == []
             assert "empty" in message.lower()
+
 
     def test_roundtrip(self) -> None:
         """Test write-then-read roundtrip consistency."""

@@ -1,3 +1,9 @@
+# ==================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: ui/config_tab.py (Configuration Tab UI)
+#  Purpose: Configuration UI for waveform and parameter tuning
+# ==================================================================================================
+
 """
 Configuration tab UI for the main application window.
 
@@ -24,6 +30,10 @@ from hello_gui.models import ConfigModel
 logger = logging.getLogger("hellogui")
 
 
+# ==================================================================================================
+#  Class ConfigTab(QWidget):
+# ==================================================================================================
+
 class ConfigTab(QWidget):
     """
     Configuration tab UI component.
@@ -39,20 +49,32 @@ class ConfigTab(QWidget):
         max_points_spin (QSpinBox): Maximum dataset buffer size.
         apply_button, reset_button (QPushButton): Action buttons.
     """
+    # --- Initialize the Config tab with parameter controls ---
 
     def __init__(self, default_config: ConfigModel, parent=None):
         """
-        Initialize the Config tab.
+        ############################################################################################
+        @fcn        __init__
+        @brief      Initialize Config tab UI with parameter controls.
+        @details    Creates spinboxes for amplitude, frequency, noise, x_step, max_points and 
+                    combobox for waveform selection. Loads initial configuration from default_config.
 
-        Args:
-            default_config (ConfigModel): Initial configuration to display.
-            parent: Parent Qt widget (optional).
+        @param[in]  default_config  ConfigModel object with initial parameter values.
+        @param[in]  parent          Parent Qt widget (optional).
+        @return     (None)
+
+        @pre        ConfigModel properly instantiated.
+        @post       All spinboxes and combobox populated; ready for signal connections.
+
+        @note       Signal connections to Apply/Reset buttons made by MainWindow.
+        ############################################################################################
         """
         super().__init__(parent)
 
         main_layout = QVBoxLayout()
 
         # --- Waveform selection ---
+
         waveform_layout = QHBoxLayout()
         waveform_layout.addWidget(QLabel("Waveform Type:"))
         self.waveform_combo = QComboBox()
@@ -62,6 +84,7 @@ class ConfigTab(QWidget):
         main_layout.addLayout(waveform_layout)
 
         # --- Amplitude ---
+
         amp_layout = QHBoxLayout()
         amp_layout.addWidget(QLabel("Amplitude:"))
         self.amplitude_spin = QDoubleSpinBox()
@@ -73,6 +96,7 @@ class ConfigTab(QWidget):
         main_layout.addLayout(amp_layout)
 
         # --- Frequency ---
+
         freq_layout = QHBoxLayout()
         freq_layout.addWidget(QLabel("Frequency (Hz):"))
         self.frequency_spin = QDoubleSpinBox()
@@ -84,6 +108,7 @@ class ConfigTab(QWidget):
         main_layout.addLayout(freq_layout)
 
         # --- Noise ---
+
         noise_layout = QHBoxLayout()
         noise_layout.addWidget(QLabel("Noise (Std Dev):"))
         self.noise_spin = QDoubleSpinBox()
@@ -95,6 +120,7 @@ class ConfigTab(QWidget):
         main_layout.addLayout(noise_layout)
 
         # --- X-Step (sampling interval) ---
+
         xstep_layout = QHBoxLayout()
         xstep_layout.addWidget(QLabel("X-Step (sample interval):"))
         self.x_step_spin = QDoubleSpinBox()
@@ -106,6 +132,7 @@ class ConfigTab(QWidget):
         main_layout.addLayout(xstep_layout)
 
         # --- Max points ---
+
         maxp_layout = QHBoxLayout()
         maxp_layout.addWidget(QLabel("Max Points in Buffer:"))
         self.max_points_spin = QSpinBox()
@@ -116,6 +143,7 @@ class ConfigTab(QWidget):
         main_layout.addLayout(maxp_layout)
 
         # --- Buttons ---
+
         button_layout = QHBoxLayout()
         self.apply_button = QPushButton("Apply")
         self.reset_button = QPushButton("Reset Defaults")
@@ -133,12 +161,24 @@ class ConfigTab(QWidget):
 
         logger.debug("ConfigTab initialized")
 
+
+    # --- Load configuration values into UI controls ---
     def load_config(self, config: ConfigModel) -> None:
         """
-        Load configuration values into the UI controls.
+        ############################################################################################
+        @fcn        load_config
+        @brief      Load configuration values into UI spinboxes and combobox.
+        @details    Updates all parameter controls (amplitude, frequency, noise, x_step, max_points,
+                    waveform) to reflect values from the provided ConfigModel.
 
-        Args:
-            config (ConfigModel): Configuration to load.
+        @param[in]  config      ConfigModel object with values to load.
+        @return     (None)
+
+        @pre        UI controls created.
+        @post       All controls display values from config; may trigger valueChanged signals.
+
+        @note       Used when applying config, resetting defaults, or loading from file.
+        ############################################################################################
         """
         self.waveform_combo.setCurrentText(config.waveform)
         self.amplitude_spin.setValue(config.amplitude)
@@ -147,12 +187,23 @@ class ConfigTab(QWidget):
         self.x_step_spin.setValue(config.x_step)
         self.max_points_spin.setValue(config.max_points)
 
+
+    # --- Build ConfigModel from current UI values ---
     def get_config(self) -> ConfigModel:
         """
-        Build a ConfigModel from current UI values.
+        ############################################################################################
+        @fcn        get_config
+        @brief      Build ConfigModel from current UI control values.
+        @details    Reads all spinboxes and combobox values and constructs a new ConfigModel
+                    representing the user's current configuration selections.
 
-        Returns:
-            ConfigModel: Configuration object with current values.
+        @return     (ConfigModel) New ConfigModel with current UI values.
+
+        @pre        All UI controls exist and have values.
+        @post       New ConfigModel created; no side effects.
+
+        @note       Used when user clicks Apply Config or Save Data.
+        ############################################################################################
         """
         return ConfigModel(
             amplitude=self.amplitude_spin.value(),
@@ -163,8 +214,24 @@ class ConfigTab(QWidget):
             max_points=self.max_points_spin.value(),
         )
 
+
+    # --- Reset all controls to factory defaults ---
     def reset_to_defaults(self) -> None:
-        """Reset all controls to factory defaults."""
+        """
+        ############################################################################################
+        @fcn        reset_to_defaults
+        @brief      Reset all parameter controls to factory default values.
+        @details    Obtains default configuration from ConfigModel.defaults() and loads it
+                    into all UI controls via load_config().
+
+        @return     (None)
+
+        @pre        UI controls created and initialized.
+        @post       All controls display factory default values; log message recorded.
+
+        @note       Connected to Reset Defaults button in MainWindow.
+        ############################################################################################
+        """
         default_config = ConfigModel.defaults()
         self.load_config(default_config)
         logger.info("Config tab reset to defaults")

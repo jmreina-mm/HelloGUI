@@ -1,3 +1,9 @@
+# ==================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: models/dataset_model.py (Dataset Data Model)
+#  Purpose: Dataclass for (x, y) point storage with auto-truncation
+# ==================================================================================================
+
 """
 Dataset model for storing and managing collected data points.
 
@@ -9,6 +15,10 @@ maximum allowed length.
 from dataclasses import dataclass, field
 from typing import Optional
 
+
+# ==================================================================================================
+#  Class DatasetModel(object):
+# ==================================================================================================
 
 @dataclass
 class DatasetModel:
@@ -24,57 +34,115 @@ class DatasetModel:
     name: str = "Untitled"
     points: list[tuple[float, float]] = field(default_factory=list)
     max_length: int = 5000
+    # --- Add a point to the dataset (FIFO truncation if needed) ---
 
     def add_point(self, x: float, y: float) -> None:
         """
-        Add a point to the dataset, respecting the max_length constraint.
+        ############################################################################################
+        @fcn        add_point
+        @brief      Add a single (x, y) point to the dataset.
+        @details    Appends point and enforces max_length constraint via FIFO removal of oldest point.
 
-        If the dataset is at max_length, the oldest point is removed.
+        @param[in]  x     X-coordinate value.
+        @param[in]  y     Y-coordinate value.
+        @return     (None)
 
-        Args:
-            x (float): X-coordinate of the point.
-            y (float): Y-coordinate of the point.
+        @pre        x and y are valid floats.
+        @post       Point added; dataset may be truncated if at max_length.
+
+        @note       Automatic truncation ensures bounded memory usage.
+        ############################################################################################
         """
         self.points.append((x, y))
         if len(self.points) > self.max_length:
             self.points.pop(0)
+    # --- Remove all points from the dataset ---
 
     def clear(self) -> None:
-        """Clear all points from the dataset."""
+        """
+        ############################################################################################
+        @fcn        clear
+        @brief      Remove all points from the dataset.
+        @details    Resets the points list to empty.
+
+        @return     (None)
+
+        @pre        None.
+        @post       Dataset contains zero points.
+
+        @note       Used when resetting or starting a new measurement.
+        ############################################################################################
+        """
         self.points.clear()
+    # --- Return the number of points in the dataset ---
 
     def point_count(self) -> int:
         """
-        Get the number of points in the dataset.
+        ############################################################################################
+        @fcn        point_count
+        @brief      Get the total number of points currently in the dataset.
+        @details    Returns length of the points list.
 
-        Returns:
-            int: Number of (x, y) points.
+        @return     (int) count of (x, y) points.
+
+        @pre        None.
+        @post       None (read-only).
+
+        @note       Efficient O(1) operation.
+        ############################################################################################
         """
         return len(self.points)
+    # --- Get the most recent point or None if dataset is empty ---
 
     def last_point(self) -> Optional[tuple[float, float]]:
         """
-        Get the last (most recent) point in the dataset.
+        ############################################################################################
+        @fcn        last_point
+        @brief      Retrieve the most recent (x, y) point.
+        @details    Returns last element of points list, or None if empty.
 
-        Returns:
-            Optional[tuple[float, float]]: The last (x, y) point, or None if empty.
+        @return     (Optional[tuple[float, float]]) Last (x, y) pair, or None.
+
+        @pre        None.
+        @post       None (read-only).
+
+        @note       Useful for status display and real-time feedback.
+        ############################################################################################
         """
         return self.points[-1] if self.points else None
+    # --- Extract all X coordinates from the dataset ---
 
     def get_x_values(self) -> list[float]:
         """
-        Extract all X values from the dataset.
+        ############################################################################################
+        @fcn        get_x_values
+        @brief      Extract all X-coordinates from the dataset.
+        @details    Returns a list of x values suitable for plotting.
 
-        Returns:
-            list[float]: List of X coordinates.
+        @return     (list[float]) All x-coordinates in order.
+
+        @pre        None.
+        @post       None (read-only; creates new list).
+
+        @note       Commonly used for plot rendering.
+        ############################################################################################
         """
         return [x for x, _ in self.points]
+    # --- Extract all Y coordinates from the dataset ---
 
     def get_y_values(self) -> list[float]:
         """
-        Extract all Y values from the dataset.
+        ############################################################################################
+        @fcn        get_y_values
+        @brief      Extract all Y-coordinates from the dataset.
+        @details    Returns a list of y values suitable for plotting.
 
-        Returns:
-            list[float]: List of Y coordinates.
+        @return     (list[float]) All y-coordinates in order.
+
+        @pre        None.
+        @post       None (read-only; creates new list).
+
+        @note       Commonly used for plot rendering.
+        ############################################################################################
         """
         return [y for _, y in self.points]

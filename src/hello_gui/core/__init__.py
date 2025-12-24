@@ -1,3 +1,10 @@
+# ============================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: core/__init__.py (Core Subpackage Initialization)
+#
+#  Purpose : Export core application components and utilities
+# ============================================================================
+
 """
 Initialize core subpackage.
 

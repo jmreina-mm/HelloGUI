@@ -1,3 +1,9 @@
+# ==================================================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: core/logging_setup.py (Logging Configuration)
+#  Purpose: Initialize rotating file and console logging with formatting
+# ==================================================================================================
+
 """
 Logging configuration for HelloGUI application.
 
@@ -10,19 +16,32 @@ import logging.handlers
 from pathlib import Path
 
 
+# --- Initialize rotating file and console logging with formatting ---
 def setup_logging(log_dir: str = "logs", log_level: int = logging.INFO) -> logging.Logger:
     """
-    Configure logging for HelloGUI with file and console handlers.
+    ################################################################################################
+    @fcn        setup_logging
+    @brief      Configure rotating file and console logging.
+    @details    Creates logs directory, sets up RotatingFileHandler (10 MB, 5 backups) and
+                console handler with consistent formatting. Returns configured logger instance.
 
-    Creates a logs directory if it doesn't exist and sets up a rotating file
-    handler (10 MB max, 5 backups) plus console output.
+    @param[in]  log_dir     Directory for log files. Defaults to "logs".
+    @param[in]  log_level   Logging level (DEBUG, INFO, WARNING, ERROR). Defaults to INFO.
+    @return     (logging.Logger) Configured "hellogui" logger instance.
 
-    Args:
-        log_dir (str): Directory for log files. Defaults to "logs".
-        log_level (int): Logging level (DEBUG, INFO, WARNING, ERROR). Defaults to INFO.
+    @pre        log_dir is writable; log_level is valid logging level.
+    @post       log_dir created if needed; "hellogui" logger configured globally.
 
-    Returns:
-        logging.Logger: Configured logger instance.
+    @section    Operation
+         1. Create logs directory
+         2. Clear any existing handlers (re-initialization safe)
+         3. Configure rotating file handler (10 MB max, 5 backups)
+         4. Configure console handler at specified level
+         5. Apply consistent formatter to both
+         6. Return configured logger
+
+    @note       Typical call at application startup before operational logging begins.
+    ################################################################################################
     """
     # Create logs directory if needed
     log_path = Path(log_dir)

@@ -1,3 +1,10 @@
+# ============================================================================
+#  HelloGUI - Python Data Stream Visualization Demo
+#  Module: ui/__init__.py (UI Subpackage Initialization)
+#
+#  Purpose : Export UI components and widget classes
+# ============================================================================
+
 """
 Initialize UI subpackage.
 
