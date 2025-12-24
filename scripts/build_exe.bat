@@ -27,7 +27,7 @@ if not exist .venv (
 )
 
 :: Activate venv
-call .venv\Scripts\activate.bat
+call ".venv\Scripts\activate.bat"
 
 :: Check if PyInstaller is installed
 pip list | findstr /i "pyinstaller" >nul

@@ -105,47 +105,52 @@ HelloGUI/
 cd HelloGUI
 ```
 
-### 2. Create a Virtual Environment
+### 2. Quick Start (Easiest)
 
-```bash
-# Windows
-python -m venv .venv
-.venv\Scripts\activate
-
-# macOS/Linux
-python3 -m venv .venv
-source .venv/bin/activate
+**Windows PowerShell** (Recommended):
+```powershell
+.\scripts\quick_start.ps1
 ```
 
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run the Application
-
-```bash
-python -m src.hello_gui.app
-```
-
-Or use the provided batch script (Windows):
-
+**Windows Batch**:
 ```bash
 scripts\quick_start.bat
 ```
 
-### 5. Run Tests
+**macOS/Linux**:
+Follow manual setup below.
+
+### 3. Manual Setup
 
 ```bash
-pytest -v
+# Create virtual environment
+python -m venv .venv
+.venv\Scripts\activate              # Windows
+source .venv/bin/activate           # macOS/Linux
+
+# Install dependencies
+pip install -r requirements.txt
+pip install -e .
+
+# Run the application
+python -m hello_gui.app
 ```
 
-Or use the batch script:
+### 4. Run Tests
 
 ```bash
-scripts\run_tests.bat
+pytest tests/ -v
 ```
+
+### 5. Build Executable (Windows)
+
+```bash
+scripts\build_exe.bat
+```
+
+---
+
+**For detailed setup instructions, see [HOWTO.md](../HOWTO.md)**
 
 ## Usage Guide
 

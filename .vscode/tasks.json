@@ -26,10 +26,15 @@
             "label": "Run: HelloGUI",
             "type": "shell",
             "command": ".venv\\Scripts\\python",
-            "args": ["-m", "src.hello_gui.app"],
+            "args": ["-m", "hello_gui.app"],
             "problemMatcher": [],
             "presentation": {
                 "reveal": "always"
+            },
+            "options": {
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}/src"
+                }
             },
             "dependsOn": ["Install: deps"]
         },
@@ -37,7 +42,12 @@
             "label": "Test: pytest",
             "type": "shell",
             "command": ".venv\\Scripts\\pytest",
-            "args": ["-v"],
+            "args": ["tests/", "-v"],
+            "options": {
+                "env": {
+                    "PYTHONPATH": "${workspaceFolder}/src"
+                }
+            },
             "problemMatcher": {
                 "owner": "python",
                 "fileLocation": ["relative", "${workspaceFolder}"],

@@ -53,6 +53,14 @@ hellogui = "hello_gui.app:main"
 [tool.hatch.build.targets.wheel]
 packages = ["src/hello_gui"]
 
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/docs",
+    "/scripts",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-v --tb=short"

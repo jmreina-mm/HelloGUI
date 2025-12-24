@@ -42,7 +42,7 @@ echo.
 
 :: Step 2: Activate virtual environment
 echo Step 2: Activating virtual environment...
-call .venv\Scripts\activate.bat
+call ".venv\Scripts\activate.bat"
 if errorlevel 1 (
     echo ERROR: Failed to activate virtual environment.
     pause
@@ -56,7 +56,13 @@ echo.
 echo Step 3: Installing dependencies...
 pip install -q -r requirements.txt
 if errorlevel 1 (
-    echo ERROR: Failed to install dependencies.
+    echo ERROR: Failed to install requirements.
+    pause
+    exit /b 1
+)
+pip install -q -e .
+if errorlevel 1 (
+    echo ERROR: Failed to install HelloGUI package.
     pause
     exit /b 1
 )

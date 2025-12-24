@@ -24,12 +24,12 @@ if not exist .venv (
 )
 
 :: Activate venv
-call .venv\Scripts\activate.bat
+call ".venv\Scripts\activate.bat"
 
 :: Run tests
 echo Running pytest...
 echo.
-pytest -v
+pytest tests/ -v
 
 if errorlevel 1 (
     echo.
